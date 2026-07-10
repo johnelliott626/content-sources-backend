@@ -138,6 +138,7 @@ type RepositoryDao interface {
 	OrphanCleanup(ctx context.Context) error
 	MarkAsNotPublic(ctx context.Context, url string) error
 	InternalOnly_UpdateCounts(ctx context.Context, repoUUID string, packageCount int, buildCount int, versionCount int) error
+	ListUrls(ctx context.Context) ([]string, error)
 }
 
 type SnapshotDao interface {

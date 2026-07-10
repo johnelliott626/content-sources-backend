@@ -218,6 +218,15 @@ func (r repositoryDaoImpl) OrphanCleanup(ctx context.Context) error {
 	return nil
 }
 
+func (r repositoryDaoImpl) ListUrls(ctx context.Context) ([]string, error) {
+	var urls []string
+	result := r.db.WithContext(ctx).Model(&models.Repository{}).Pluck("url", &urls)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return urls, nil
+}
+
 // modelToInternal returns internal Repository with fields of model
 func modelToInternal(model models.Repository, internal *Repository) {
 	internal.UUID = model.UUID

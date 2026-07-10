@@ -73,6 +73,7 @@ func RegisterRepositoryRoutes(engine *echo.Group, daoReg *dao.DaoRegistry,
 	addRepoRoute(engine, http.MethodPost, "/repositories/bulk_export/", rh.bulkExportRepositories, rbac.RbacVerbRead)
 	addRepoRoute(engine, http.MethodPost, "/repositories/bulk_import/", rh.bulkImportRepositories, rbac.RbacVerbWrite)
 	addRepoRoute(engine, http.MethodPost, "/repositories/:uuid/rpms/bulk_remove/", rh.bulkRemoveRpms, rbac.RbacVerbWrite)
+	addRepoRoute(engine, http.MethodGet, "/repositories/urls/", rh.listRepositoryUrls, rbac.RbacVerbRead)
 }
 
 func getAccountIdOrgId(c echo.Context) (string, string) {
@@ -1173,4 +1174,22 @@ func (rh *RepositoryHandler) CheckSnapshotForRepos(c echo.Context, repos []api.R
 		return rh.CheckSnapshotForRepo(c, repo.Snapshot)
 	}
 	return nil
+}
+
+// ListRepositoryUrls godoc
+// @Summary      List all repository URLs
+// @ID           listRepositoryUrls
+// @Description  Returns all URLs from the repositories table.
+// @Tags         repositories
+// @Produce      json
+// @Success      200 {object} api.RepositoryUrlsResponse
+// @Failure      401 {object} ce.ErrorResponse
+// @Failure      500 {object} ce.ErrorResponse
+// @Router       /repositories/urls/ [get]
+func (rh *RepositoryHandler) listRepositoryUrls(c echo.Context) error {
+	urls, err := rh.DaoRegistry.Repository.ListUrls(c.Request().Context())
+	if err != nil {
+		return ce.NewErrorResponse(ce.HttpCodeForDaoError(err), "Error listing repository URLs", err.Error())
+	}
+	return c.JSON(http.StatusOK, api.RepositoryUrlsResponse{Urls: urls})
 }
