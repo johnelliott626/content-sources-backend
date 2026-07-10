@@ -1004,6 +1004,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/repositories/urls/": {
+            "get": {
+                "description": "Returns all URLs from the repositories table.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "repositories"
+                ],
+                "summary": "List all repository URLs",
+                "operationId": "listRepositoryUrls",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/api.RepositoryUrlsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/errors.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/errors.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/repositories/{repo_uuid}/snapshots/bulk_delete/": {
             "post": {
                 "description": "This enables deleting specified snapshots from a repository.",
@@ -5473,6 +5506,18 @@ const docTemplate = `{
                 "url": {
                     "description": "URL of the remote yum repository",
                     "type": "string"
+                }
+            }
+        },
+        "api.RepositoryUrlsResponse": {
+            "type": "object",
+            "properties": {
+                "urls": {
+                    "description": "URLs of the repositories",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

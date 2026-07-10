@@ -1380,6 +1380,18 @@
                 },
                 "type": "object"
             },
+            "api.RepositoryUrlsResponse": {
+                "properties": {
+                    "urls": {
+                        "description": "URLs of the repositories",
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    }
+                },
+                "type": "object"
+            },
             "api.RepositoryValidationRequest": {
                 "properties": {
                     "gpg_key": {
@@ -3677,6 +3689,48 @@
                     }
                 },
                 "summary": "Upload a file chunk",
+                "tags": [
+                    "repositories"
+                ]
+            }
+        },
+        "/repositories/urls/": {
+            "get": {
+                "description": "Returns all URLs from the repositories table.",
+                "operationId": "listRepositoryUrls",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/api.RepositoryUrlsResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    },
+                    "401": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/errors.ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/errors.ErrorResponse"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "summary": "List all repository URLs",
                 "tags": [
                     "repositories"
                 ]
