@@ -605,3 +605,28 @@ func (s *RepositorySuite) TestInternalOnly_UpdatePackageCount() {
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "repository not found")
 }
+
+func (s *RepositorySuite) TestListUrls() {
+	t := s.T()
+	tx := s.tx
+
+	// Isolate this test from other seeded repos
+	tx.SavePoint("testlisturls")
+	defer tx.RollbackTo("testlisturls")
+
+	// Delete all repos
+	err := tx.Exec(testDeleteTablesQuery).Error
+	require.NoError(t, err)
+
+	err = tx.Create(s.repo).Error
+	require.NoError(t, err)
+	err = tx.Create(s.repoPrivate).Error
+	require.NoError(t, err)
+
+	dao := GetRepositoryDao(tx)
+	urls, err := dao.ListUrls(context.Background())
+	assert.NoError(t, err)
+	assert.Len(t, urls, 2)
+	assert.Contains(t, urls, s.repo.URL)
+	assert.Contains(t, urls, s.repoPrivate.URL)
+}
