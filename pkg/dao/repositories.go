@@ -220,7 +220,7 @@ func (r repositoryDaoImpl) OrphanCleanup(ctx context.Context) error {
 
 func (r repositoryDaoImpl) ListUrls(ctx context.Context) ([]string, error) {
 	var urls []string
-	result := r.db.WithContext(ctx).Model(&models.Repository{}).Pluck("url", &urls)
+	result := r.db.WithContext(ctx).Model(&models.Repository{}).Where("url IS NOT NULL AND url != ''").Pluck("url", &urls)
 	if result.Error != nil {
 		return nil, result.Error
 	}
