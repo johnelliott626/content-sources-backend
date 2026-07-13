@@ -1736,6 +1736,32 @@ func (suite *ReposSuite) TestGetGpgKeyFile() {
 	assert.Equal(t, http.StatusNotFound, code)
 }
 
+func (suite *ReposSuite) TestListRepositoryUrls() {
+	t := suite.T()
+
+	expectedUrls := []string{
+		"https://www.example1.com",
+		"https://www.example2.com",
+	}
+
+	suite.reg.Repository.On("ListUrls", test.MockCtx()).Return(expectedUrls, nil)
+
+	path := api.FullRootPath() + "/repositories/urls/"
+	req := httptest.NewRequest(http.MethodGet, path, nil)
+
+	req.Header.Set(api.IdentityHeader, test_handler.EncodedIdentity(t))
+
+	code, body, err := suite.serveRepositoriesRouter(req)
+	assert.Nil(t, err)
+
+	assert.Equal(t, http.StatusOK, code)
+
+	response := api.RepositoryUrlsResponse{}
+	err = json.Unmarshal(body, &response)
+	assert.Nil(t, err)
+	assert.Equal(t, expectedUrls, response.Urls)
+}
+
 func TestReposSuite(t *testing.T) {
 	suite.Run(t, new(ReposSuite))
 }
