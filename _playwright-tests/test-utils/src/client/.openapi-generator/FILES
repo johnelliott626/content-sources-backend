@@ -56,6 +56,7 @@ models/ApiRepositoryResponse.ts
 models/ApiRepositoryRpm.ts
 models/ApiRepositoryRpmCollectionResponse.ts
 models/ApiRepositoryUpdateRequest.ts
+models/ApiRepositoryUrlsResponse.ts
 models/ApiRepositoryValidationRequest.ts
 models/ApiRepositoryValidationResponse.ts
 models/ApiResponseMetadata.ts

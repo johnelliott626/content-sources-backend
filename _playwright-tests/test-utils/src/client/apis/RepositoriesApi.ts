@@ -74,6 +74,11 @@ import {
     ApiRepositoryUpdateRequestToJSON,
 } from '../models/ApiRepositoryUpdateRequest';
 import {
+    type ApiRepositoryUrlsResponse,
+    ApiRepositoryUrlsResponseFromJSON,
+    ApiRepositoryUrlsResponseToJSON,
+} from '../models/ApiRepositoryUrlsResponse';
+import {
     type ApiRepositoryValidationRequest,
     ApiRepositoryValidationRequestFromJSON,
     ApiRepositoryValidationRequestToJSON,
@@ -1159,6 +1164,45 @@ export class RepositoriesApi extends runtime.BaseAPI {
      */
     async listRepositoryParameters(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApiRepositoryParameterResponse> {
         const response = await this.listRepositoryParametersRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for listRepositoryUrls without sending the request
+     */
+    async listRepositoryUrlsRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/repositories/urls/`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Returns all URLs from the repositories table.
+     * List all repository URLs
+     */
+    async listRepositoryUrlsRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ApiRepositoryUrlsResponse>> {
+        const requestOptions = await this.listRepositoryUrlsRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ApiRepositoryUrlsResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Returns all URLs from the repositories table.
+     * List all repository URLs
+     */
+    async listRepositoryUrls(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ApiRepositoryUrlsResponse> {
+        const response = await this.listRepositoryUrlsRaw(initOverrides);
         return await response.value();
     }
 

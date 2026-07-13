@@ -43,6 +43,7 @@ export * from './ApiRepositoryResponse';
 export * from './ApiRepositoryRpm';
 export * from './ApiRepositoryRpmCollectionResponse';
 export * from './ApiRepositoryUpdateRequest';
+export * from './ApiRepositoryUrlsResponse';
 export * from './ApiRepositoryValidationRequest';
 export * from './ApiRepositoryValidationResponse';
 export * from './ApiResponseMetadata';
